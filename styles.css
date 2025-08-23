@@ -16,7 +16,7 @@ body{
 #display{
     width: 100%;
     padding: 20px;
-    font-size: 5rem;
+    font-size: 1.5rem;
     text-align: right;
     border: none;
     background-color: hsl(0, 0%, 20%);
@@ -35,7 +35,7 @@ button{
     border: none;
     background-color: hsl(0, 0%, 30%);
     color: white;
-    font-size: 2.5rem;
+    font-size: 1.5rem;
     font-weight: 400;
     cursor: pointer;
 }
