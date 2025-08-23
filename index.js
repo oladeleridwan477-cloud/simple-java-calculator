@@ -25,7 +25,7 @@ function calculateResult() {
   try {
     // Replace the symbols with JavaScript-friendly operators before evaluation
     const expression = display.value.replace(/×/g, '*').replace(/÷/g, '/');
-    display.value = eval(expression);
+    display.value = eval(display.value);
   } catch (error) {
     display.value = "Error";
   }
@@ -33,4 +33,4 @@ function calculateResult() {
 
 function clearDisplay() {
   display.value = "";
-}
+} 
