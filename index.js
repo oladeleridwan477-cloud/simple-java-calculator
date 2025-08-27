@@ -1,60 +1,82 @@
 let display = document.getElementById('display');
-let currentInput = '0';
+let currentExpression = '';
+let lastResult = null;
 
-function appendToDisplay(value) {
-    if (currentInput === '0' && value !== '.') {
-        currentInput = value;
+function appendNumber(number) {
+    if (currentExpression === '0' || currentExpression === lastResult) {
+        currentExpression = number;
     } else {
-        currentInput += value;
+        currentExpression += number;
     }
     updateDisplay();
 }
 
-function clearDisplay() {
-    currentInput = '0';
+function appendOperator(operator) {
+    if (currentExpression && !isOperator(currentExpression.slice(-1))) {
+        currentExpression += operator;
+    } else if (currentExpression && isOperator(currentExpression.slice(-1))) {
+        currentExpression = currentExpression.slice(0, -1) + operator;
+    }
     updateDisplay();
+}
+
+function isOperator(char) {
+    return ['+', '−', '×', '÷'].includes(char);
+}
+
+function clearDisplay() {
+    currentExpression = '';
+    lastResult = null;
+    display.value = '0';
+}
+
+function toggleSign() {
+    if (currentExpression && !isOperator(currentExpression.slice(-1))) {
+        let parts = currentExpression.split(/([+−×÷])/);
+        let lastPart = parts[parts.length - 1];
+        if (lastPart) {
+            parts[parts.length - 1] = (-parseFloat(lastPart)).toString();
+            currentExpression = parts.join('');
+            updateDisplay();
+        }
+    }
+}
+
+function percent() {
+    if (currentExpression && !isOperator(currentExpression.slice(-1))) {
+        let parts = currentExpression.split(/([+−×÷])/);
+        let lastPart = parts[parts.length - 1];
+        if (lastPart) {
+            parts[parts.length - 1] = (parseFloat(lastPart) / 100).toString();
+            currentExpression = parts.join('');
+            updateDisplay();
+        }
+    }
 }
 
 function calculate() {
     try {
-        // Replace ÷ with / for eval
-        let expression = currentInput.replace(/÷/g, '/');
-        let result = eval(expression);
-        // Format result to avoid floating-point precision issues
-        result = Math.round(result * 1000000) / 1000000;
-        currentInput = result.toString();
-        updateDisplay();
-    } catch (error) {
-        currentInput = 'Error';
-        updateDisplay();
-        setTimeout(clearDisplay, 1000);
+        let expression = currentExpression
+            .replace(/×/g, '*')
+            .replace(/÷/g, '/')
+            .replace(/−/g, '-');
+        if (expression) {
+            let result = eval(expression);
+            if (!isFinite(result)) {
+                display.value = 'Error';
+                currentExpression = '';
+                return;
+            }
+            currentExpression = result.toString();
+            lastResult = currentExpression;
+            updateDisplay();
+        }
+    } catch (e) {
+        display.value = 'Error';
+        currentExpression = '';
     }
 }
 
 function updateDisplay() {
-    display.textContent = currentInput;
+    display.value = currentExpression || '0';
 }
-
-// Handle keyboard input
-document.addEventListener('keydown', (event) => {
-    const key = event.key;
-    if (/\d/.test(key)) {
-        appendToDisplay(key);
-    } else if (key === '.') {
-        appendToDisplay('.');
-    } else if (key === '+') {
-        appendToDisplay('+');
-    } else if (key === '-') {
-        appendToDisplay('-');
-    } else if (key === '*') {
-        appendToDisplay('*');
-    } else if (key === '/') {
-        appendToDisplay('/');
-    } else if (key === 'Enter') {
-        calculate();
-    } else if (key === 'Escape') {
-        clearDisplay();
-    } else if (key === '(' || key === ')') {
-        appendToDisplay(key);
-    }
-});

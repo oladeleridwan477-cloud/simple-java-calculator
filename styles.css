@@ -1,11 +1,16 @@
-body {
+* {
     margin: 0;
-    height: 100vh;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 100vh;
     background: #000;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .calculator {
@@ -14,28 +19,28 @@ body {
     background: #000;
     border-radius: 20px;
     padding: 20px;
-    box-sizing: border-box;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
 }
 
 .display {
-    height: 80px;
+    width: 100%;
+    height: 100px;
     background: #000;
     color: #fff;
-    font-size: 48px;
+    font-size: 2.5em;
     text-align: right;
-    padding: 10px;
+    padding: 20px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    border-bottom: 1px solid #333;
+    border: none;
+    outline: none;
 }
 
 .buttons {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
-    margin-top: 10px;
 }
 
 button {
@@ -43,7 +48,7 @@ button {
     height: 60px;
     border: none;
     border-radius: 50%;
-    font-size: 24px;
+    font-size: 1.5em;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -55,41 +60,43 @@ button:active {
     transform: scale(0.95);
 }
 
-.number, .decimal {
-    background: #333;
-    color: #fff;
-}
-
 .operator {
     background: #f1a33c;
     color: #fff;
 }
 
-.clear, .equals {
+.number {
+    background: #333;
+    color: #fff;
+}
+
+.function {
     background: #a5a5a5;
     color: #000;
 }
 
 .equals {
     background: #f1a33c;
+    color: #fff;
 }
 
 .zero {
     grid-column: span 2;
     width: 130px;
     border-radius: 30px;
+    justify-content: flex-start;
+    padding-left: 20px;
 }
 
-@media (max-width: 400px) {
+@media (max-width: 360px) {
     .calculator {
-        max-width: 100%;
-        padding: 10px;
+        max-width: 280px;
     }
 
     button {
         width: 50px;
         height: 50px;
-        font-size: 20px;
+        font-size: 1.2em;
     }
 
     .zero {
@@ -97,28 +104,7 @@ button:active {
     }
 
     .display {
-        font-size: 36px;
-        height: 60px;
-    }
-}
-
-@media (min-width: 768px) {
-    .calculator {
-        max-width: 400px;
-    }
-
-    button {
-        width: 80px;
+        font-size: 2em;
         height: 80px;
-        font-size: 28px;
-    }
-
-    .zero {
-        width: 170px;
-    }
-
-    .display {
-        font-size: 60px;
-        height: 100px;
     }
 }
